@@ -1,4 +1,3 @@
-```html    
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -304,8 +303,6 @@ header p {
     font-size: 16px;
 
     font-weight: 500;
-
-    line-height: 1.6;
 }
 
 
@@ -319,15 +316,43 @@ header p {
 }
 
 
-.info-panel a {
+/* =========================
+   Podcast
+========================= */
 
-    color: #4267a9;
+.podcast-item {
+
+    padding: 12px;
+
+    background: #f5f3ef;
+
+    border-radius: 8px;
+
+    margin-bottom: 10px;
+}
+
+
+.podcast-title {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+}
+
+
+.podcast-link {
+
+    font-size: 13px;
+
+    color: #555;
 
     text-decoration: none;
 }
 
 
-.info-panel a:hover {
+.podcast-link:hover {
 
     text-decoration: underline;
 }
@@ -375,7 +400,6 @@ England · France · Holy Roman Empire
 </header>
 
 
-
 <div class="container">
 
 
@@ -385,18 +409,14 @@ England · France · Holy Roman Empire
 
 <div class="timeline-area">
 
+    <div
+        class="years"
+        id="years">
+    </div>
 
-<div
-    class="years"
-    id="years">
-</div>
-
-
-<div id="timeline"></div>
-
+    <div id="timeline"></div>
 
 </div>
-
 
 
 <!-- =================================
@@ -407,14 +427,14 @@ England · France · Holy Roman Empire
     class="info-panel"
     id="infoPanel">
 
-<h2>
-選擇一位君王
-</h2>
+    <h2>
+        選擇一位君王
+    </h2>
 
-<p>
-點擊時間軸上的君王，
-這裡會顯示詳細資訊。
-</p>
+    <p>
+        點擊時間軸上的君王，
+        這裡會顯示詳細資訊。
+    </p>
 
 </aside>
 
@@ -432,6 +452,182 @@ England · France · Holy Roman Empire
 const START_YEAR = 1000;
 
 const END_YEAR = 1600;
+
+
+/* ===================================
+   歷史資料
+=================================== */
+
+const countries = [
+
+    {
+
+        name: "🇬🇧 英格蘭",
+
+        className: "england",
+
+        rulers: [
+
+            {
+                id: 1,
+                name: "William I",
+                start: 1066,
+                end: 1087,
+                dynasty: "Norman",
+                description:
+                    "征服者威廉，諾曼征服英格蘭後成為英格蘭國王。"
+            },
+
+            {
+                id: 2,
+                name: "Henry I",
+                start: 1100,
+                end: 1135,
+                dynasty: "Norman",
+                description:
+                    "亨利一世是諾曼王朝的重要君主。"
+            },
+
+            {
+                id: 3,
+                name: "Henry II",
+                start: 1154,
+                end: 1189,
+                dynasty: "Plantagenet",
+                description:
+                    "亨利二世建立金雀花王朝在英格蘭的統治。"
+            },
+
+            {
+                id: 4,
+                name: "Henry VIII",
+                start: 1509,
+                end: 1547,
+                dynasty: "Tudor",
+                description:
+                    "亨利八世是都鐸王朝最著名的君主之一，統治期間發生英格蘭宗教改革。"
+            }
+
+        ]
+
+    },
+
+
+    {
+
+        name: "🇫🇷 法國",
+
+        className: "france",
+
+        rulers: [
+
+            {
+                id: 5,
+                name: "Philip VI",
+                start: 1328,
+                end: 1350,
+                dynasty: "Valois",
+                description:
+                    "腓力六世是法國瓦盧瓦王朝的第一位國王。"
+            },
+
+            {
+                id: 6,
+                name: "Charles V",
+                start: 1364,
+                end: 1380,
+                dynasty: "Valois",
+                description:
+                    "查理五世是百年戰爭時期的重要法國君主。"
+            },
+
+            {
+                id: 7,
+                name: "Francis I",
+                start: 1515,
+                end: 1547,
+                dynasty: "Valois-Angoulême",
+                description:
+                    "法國文藝復興時期的重要君主。"
+            }
+
+        ]
+
+    },
+
+
+    {
+
+        name: "🏰 神聖羅馬帝國",
+
+        className: "hre",
+
+        rulers: [
+
+            {
+                id: 8,
+                name: "Henry II",
+                start: 1002,
+                end: 1024,
+                dynasty: "Ottonian",
+                description:
+                    "亨利二世是神聖羅馬帝國的重要奧托王朝君主。"
+            },
+
+            {
+                id: 9,
+                name: "Frederick I",
+                start: 1152,
+                end: 1190,
+                dynasty: "Hohenstaufen",
+                description:
+                    "腓特烈一世，又稱巴巴羅薩，是霍亨斯陶芬王朝的重要君主。"
+            },
+
+            {
+                id: 10,
+                name: "Charles V",
+                start: 1519,
+                end: 1556,
+                dynasty: "Habsburg",
+                description:
+                    "查理五世統治廣大的哈布斯堡領地，是16世紀歐洲最重要的君主之一。"
+            }
+
+        ]
+
+    }
+
+];
+
+
+/* ===================================
+   Podcast 資料
+=================================== */
+
+/*
+    之後這裡會改成從 Google Sheet
+    自動讀取。
+
+    一位君王可以有多集 Podcast。
+*/
+
+const podcasts = [
+
+    {
+
+        ruler_id: 4,
+
+        title: "時間的女兒｜八卦歷史",
+
+        url:
+            "https://podcasts.apple.com/tw/podcast/%E6%99%82%E9%96%93%E7%9A%84%E5%A5%B3%E5%85%92-%E5%85%AB%E5%8D%A6%E6%AD%B7%E5%8F%B2/id1549521834?i=1000505640715",
+
+        order: 1
+
+    }
+
+];
 
 
 /* ===================================
@@ -457,9 +653,6 @@ function createYears() {
 
     const years =
         document.getElementById("years");
-
-
-    years.innerHTML = "";
 
 
     for (
@@ -492,6 +685,156 @@ function createYears() {
 
 
 /* ===================================
+   建立時間軸
+=================================== */
+
+function createTimeline() {
+
+    const timeline =
+        document.getElementById("timeline");
+
+
+    countries.forEach(country => {
+
+
+        const countryElement =
+            document.createElement("div");
+
+
+        countryElement.className =
+            "country";
+
+
+        /* =========================
+           國家名稱
+        ========================= */
+
+        const countryName =
+            document.createElement("div");
+
+
+        countryName.className =
+            "country-name";
+
+
+        countryName.innerText =
+            country.name;
+
+
+        countryElement.appendChild(
+            countryName
+        );
+
+
+        /* =========================
+           君王區域
+        ========================= */
+
+        const rulers =
+            document.createElement("div");
+
+
+        rulers.className =
+            "rulers";
+
+
+        country.rulers.forEach(
+            (ruler, index) => {
+
+
+            const button =
+                document.createElement("button");
+
+
+            button.className =
+                "ruler "
+                +
+                country.className;
+
+
+            const left =
+                yearToPercent(
+                    ruler.start
+                );
+
+
+            const width =
+                yearToPercent(
+                    ruler.end
+                )
+                -
+                yearToPercent(
+                    ruler.start
+                );
+
+
+            button.style.left =
+                left + "%";
+
+
+            button.style.width =
+                width + "%";
+
+
+            /*
+                同一國家如果君王重疊，
+                就上下排列。
+            */
+
+            button.style.top =
+                (index % 2) * 55
+                + 10
+                + "px";
+
+
+            button.innerHTML = `
+
+                <div class="ruler-name">
+                    ${ruler.name}
+                </div>
+
+                <div class="ruler-years">
+                    ${ruler.start}
+                    –
+                    ${ruler.end}
+                </div>
+
+            `;
+
+
+            button.onclick =
+                function() {
+
+                    showRuler(
+                        ruler,
+                        country
+                    );
+
+                };
+
+
+            rulers.appendChild(
+                button
+            );
+
+        });
+
+
+        countryElement.appendChild(
+            rulers
+        );
+
+
+        timeline.appendChild(
+            countryElement
+        );
+
+    });
+
+}
+
+
+/* ===================================
    顯示君王資訊
 =================================== */
 
@@ -506,10 +849,79 @@ function showRuler(
         );
 
 
+    /*
+        找出這位君王的所有 Podcast
+    */
+
+    const rulerPodcasts =
+        podcasts
+            .filter(
+                podcast =>
+                    podcast.ruler_id === ruler.id
+            )
+            .sort(
+                (a, b) =>
+                    a.order - b.order
+            );
+
+
+    let podcastHTML = "";
+
+
+    if (
+        rulerPodcasts.length > 0
+    ) {
+
+        podcastHTML =
+
+            rulerPodcasts
+                .map(
+                    podcast => `
+
+                        <div
+                            class="podcast-item">
+
+                            <div
+                                class="podcast-title">
+
+                                🎧
+                                ${podcast.title}
+
+                            </div>
+
+                            <a
+                                class="podcast-link"
+                                href="${podcast.url}"
+                                target="_blank"
+                                rel="noopener noreferrer">
+
+                                ▶ 開啟 Apple Podcasts
+
+                            </a>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+    } else {
+
+        podcastHTML = `
+
+            <p>
+                目前沒有 Podcast。
+            </p>
+
+        `;
+
+    }
+
+
     panel.innerHTML = `
 
         <h2>
-            ${ruler.ruler}
+            ${ruler.name}
         </h2>
 
 
@@ -554,21 +966,18 @@ function showRuler(
         </div>
 
 
+        <hr>
+
+
         <div class="info-item">
 
             <div class="info-label">
                 人物介紹
             </div>
 
-            <div class="info-value">
-
-                ${
-                    ruler.description
-                    ||
-                    "目前沒有介紹資料。"
-                }
-
-            </div>
+            <p>
+                ${ruler.description}
+            </p>
 
         </div>
 
@@ -579,59 +988,30 @@ function showRuler(
         <div class="info-item">
 
             <div class="info-label">
-                🎧 Podcast / YouTube
+                🎧 Podcast
             </div>
 
-            ${
-                ruler.podcast
-                ?
-                `
-                <a
-                    href="${ruler.podcast}"
-                    target="_blank"
-                    rel="noopener noreferrer">
-
-                    開啟影音內容
-
-                </a>
-                `
-                :
-                `
-                <p>
-                    目前沒有影音連結。
-                </p>
-                `
-            }
+            ${podcastHTML}
 
         </div>
+
+
+        <hr>
 
 
         <div class="info-item">
 
             <div class="info-label">
-                📚 Wikipedia
+                📚 延伸閱讀
             </div>
 
-            ${
-                ruler.wikipedia
-                ?
-                `
-                <a
-                    href="${ruler.wikipedia}"
-                    target="_blank"
-                    rel="noopener noreferrer">
+            <a
+                href="#"
+                onclick="return false;">
 
-                    閱讀 Wikipedia
+                Wikipedia
 
-                </a>
-                `
-                :
-                `
-                <p>
-                    目前沒有 Wikipedia 連結。
-                </p>
-                `
-            }
+            </a>
 
         </div>
 
@@ -656,15 +1036,6 @@ async function loadGoogleSheet() {
             await fetch(sheetURL);
 
 
-        if (!response.ok) {
-
-            throw new Error(
-                "Google Sheet 無法讀取"
-            );
-
-        }
-
-
         const csv =
             await response.text();
 
@@ -676,47 +1047,80 @@ async function loadGoogleSheet() {
 
 
         const rows =
-            csv
-            .trim()
-            .split(/\r?\n/);
+            csv.trim().split("\n");
+
+
+        const headers =
+            rows[0].split(",");
 
 
         const data =
             rows
-            .slice(1)
-            .map(row => {
+                .slice(1)
+                .map(row => {
 
-               const values =
-    row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-        ?.map(value =>
-            value.replace(/^"|"$/g, "").trim()
-        ) || [];
+                    const values =
+                        row.match(
+                            /(".*?"|[^",]+)(?=\s*,|\s*$)/g
+                        )
+                        ?.map(
+                            value =>
+                                value
+                                    .replace(
+                                        /^"|"$/g,
+                                        ""
+                                    )
+                                    .trim()
+                        )
+                        || [];
 
 
-const item = {};
+                    const item = {};
 
-item.id = values[0] || "";
-item.country = values[1] || "";
-item.ruler = values[2] || "";
-item.dynasty = values[3] || "";
-item.start = Number(values[4]);
-item.end = Number(values[5]);
-item.description = values[6] || "";
-item.wikipedia = values[7] || "";
-item.podcast = values[8] || "";
 
-return item;
+                    item.id =
+                        values[0] || "";
 
-            });
+
+                    item.country =
+                        values[1] || "";
+
+
+                    item.ruler =
+                        values[2] || "";
+
+
+                    item.dynasty =
+                        values[3] || "";
+
+
+                    item.start =
+                        Number(values[4]);
+
+
+                    item.end =
+                        Number(values[5]);
+
+
+                    item.description =
+                        values[6] || "";
+
+
+                    item.wikipedia =
+                        values[7] || "";
+
+
+                    item.podcast =
+                        values[8] || "";
+
+
+                    return item;
+
+                });
 
 
         console.log(
-            "Google Sheets 整理後資料：",
-            data
-        );
-
-
-        createTimelineFromSheet(
+            "Google Sheets 資料：",
             data
         );
 
@@ -734,336 +1138,18 @@ return item;
 
 
 /* ===================================
-   Google Sheet → 時間軸
-=================================== */
-
-function createTimelineFromSheet(
-    data
-) {
-
-    const timeline =
-        document.getElementById(
-            "timeline"
-        );
-
-
-    timeline.innerHTML = "";
-
-
-    /* =========================
-       過濾無效資料
-    ========================= */
-
-    const validData =
-        data.filter(ruler => {
-
-            return (
-                ruler.country &&
-                ruler.ruler &&
-                Number.isFinite(
-                    ruler.start
-                ) &&
-                Number.isFinite(
-                    ruler.end
-                )
-            );
-
-        });
-
-
-    /* =========================
-       按國家分類
-    ========================= */
-
-    const groupedCountries = {};
-
-
-    validData.forEach(
-        ruler => {
-
-        if (
-            !groupedCountries[
-                ruler.country
-            ]
-        ) {
-
-            groupedCountries[
-                ruler.country
-            ] = [];
-
-        }
-
-
-        groupedCountries[
-            ruler.country
-        ].push(ruler);
-
-    });
-
-
-    /* =========================
-       建立國家列
-    ========================= */
-
-    Object.keys(
-        groupedCountries
-    ).forEach(
-        countryName => {
-
-
-        const countryElement =
-            document.createElement(
-                "div"
-            );
-
-
-        countryElement.className =
-            "country";
-
-
-        /* 國家名稱 */
-
-        const countryNameElement =
-            document.createElement(
-                "div"
-            );
-
-
-        countryNameElement.className =
-            "country-name";
-
-
-        countryNameElement.innerText =
-            countryName;
-
-
-        countryElement.appendChild(
-            countryNameElement
-        );
-
-
-        /* 君王區域 */
-
-        const rulers =
-            document.createElement(
-                "div"
-            );
-
-
-        rulers.className =
-            "rulers";
-
-
-        /* =========================
-           建立君王
-        ========================= */
-
-        groupedCountries[
-            countryName
-        ].forEach(
-            (ruler, index) => {
-
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            /* =========================
-               國家顏色
-            ========================= */
-
-            let countryClass =
-                "england";
-
-
-            if (
-                countryName.includes(
-                    "法國"
-                )
-            ) {
-
-                countryClass =
-                    "france";
-
-            }
-
-
-            if (
-                countryName.includes(
-                    "神聖羅馬帝國"
-                )
-            ) {
-
-                countryClass =
-                    "hre";
-
-            }
-
-
-            button.className =
-                "ruler "
-                +
-                countryClass;
-
-
-            /* =========================
-               年份位置
-            ========================= */
-
-            const left =
-                yearToPercent(
-                    ruler.start
-                );
-
-
-            const right =
-                yearToPercent(
-                    ruler.end
-                );
-
-
-            const width =
-                right - left;
-
-
-            button.style.left =
-                left + "%";
-
-
-            button.style.width =
-                width + "%";
-
-
-            /* =========================
-               上下排列
-            ========================= */
-
-            button.style.top =
-                (index % 2) * 55
-                + 10
-                + "px";
-
-
-            /* =========================
-               君王文字
-            ========================= */
-
-            button.innerHTML = `
-
-                <div class="ruler-name">
-
-                    ${ruler.ruler}
-
-                </div>
-
-                <div class="ruler-years">
-
-                    ${ruler.start}
-                    –
-                    ${ruler.end}
-
-                </div>
-
-            `;
-
-
-            /* =========================
-               點擊事件
-            ========================= */
-
-            button.onclick =
-                function() {
-
-                    showRuler(
-                        ruler,
-                        {
-                            name:
-                                countryName
-                        }
-                    );
-
-                };
-
-
-            rulers.appendChild(
-                button
-            );
-
-        });
-
-
-        countryElement.appendChild(
-            rulers
-        );
-
-
-        timeline.appendChild(
-            countryElement
-        );
-
-    });
-
-async function testApplePodcast() {
-
-    const podcastURL =
-        "https://podcasts.apple.com/tw/podcast/%E6%99%82%E9%96%93%E7%9A%84%E5%A5%B3%E5%85%92-%E5%85%AB%E5%8D%A6%E6%AD%B7%E5%8F%B2/id1549521834?i=1000505640715";
-
-
-    const match =
-        podcastURL.match(
-            /id(\d+).*?[?&]i=(\d+)/
-        );
-
-
-    if (!match) {
-
-        console.error(
-            "無法從網址取得 Podcast ID"
-        );
-
-        return;
-
-    }
-
-
-    const podcastId =
-        match[1];
-
-
-    const episodeId =
-        match[2];
-
-
-    console.log(
-        "Podcast ID:",
-        podcastId
-    );
-
-
-    console.log(
-        "Episode ID:",
-        episodeId
-    );
-
-}
-
-
-/* ===================================
    啟動
 =================================== */
 
 createYears();
 
+createTimeline();
+
 loadGoogleSheet();
 
-testApplePodcast();
-      
 </script>
 
 
 </body>
 
 </html>
-```
