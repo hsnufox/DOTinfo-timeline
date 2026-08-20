@@ -846,14 +846,82 @@ function showRuler(
 
 }
 
+async function loadGoogleSheet() {
 
+    const sheetURL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRVkmsLln3MzZ7wG4hR7d-XsSZ6YPGARzDmrzMk61yO_qNdMjW4JA9lvUD1V7F6T1ArXQ4RJSk3W0TW/pub?output=csv";
+
+
+    try {
+
+        const response =
+            await fetch(sheetURL);
+
+
+        const csv =
+            await response.text();
+
+
+        console.log(csv);
+
+
+        const rows =
+            csv.trim().split("\n");
+
+
+        const headers =
+            rows[0].split(",");
+
+
+        const data =
+            rows.slice(1).map(row => {
+
+                const values =
+                    row.split(",");
+
+
+                return {
+
+                    id: values[0],
+
+                    country: values[1],
+
+                    ruler: values[2],
+
+                    dynasty: values[3],
+
+                    start: Number(values[4]),
+
+                    end: Number(values[5])
+
+                };
+
+            });
+
+
+        console.log(
+            "Google Sheets 資料：",
+            data
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "讀取 Google Sheets 失敗：",
+            error
+        );
+
+    }
+
+}
 /* ===================================
    啟動
 =================================== */
 
 createYears();
 
-createTimeline();
+loadGoogleSheet();
 
 </script>
 
