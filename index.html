@@ -1241,88 +1241,99 @@ async function loadRulersSheet() {
             parseCSV(csv);
 
 
-        const headers =
-            rows[0];
+const headers =
+    rows[0].map(
+        header =>
+            header.trim()
+    );
 
 
-        console.log(
-            "Google Sheet 欄位：",
-            headers
+console.log(
+    "Google Sheet 欄位：",
+    headers
+);
+
+
+rulersData =
+    rows
+        .slice(1)
+        .map(
+            values => {
+
+                const item = {};
+
+
+                const get =
+                    columnName => {
+
+                        const index =
+                            headers.indexOf(
+                                columnName
+                            );
+
+
+                        return index !== -1
+                            && values[index] !== undefined
+                            ? values[index].trim()
+                            : "";
+
+                    };
+
+
+                item.id =
+                    get("id");
+
+
+                item.country =
+                    get("country");
+
+
+                item.ruler =
+                    get("ruler");
+
+
+                item.dynasty =
+                    get("dynasty");
+
+
+                item.start =
+                    Number(
+                        get("start")
+                    );
+
+
+                item.end =
+                    Number(
+                        get("end")
+                    );
+
+
+                item.description =
+                    get("description");
+
+
+                item.wikipedia =
+                    get("wikipedia");
+
+
+                return item;
+
+            }
+        )
+        .filter(
+            ruler =>
+                ruler.country
+                &&
+                ruler.ruler
+                &&
+                Number.isFinite(
+                    ruler.start
+                )
+                &&
+                Number.isFinite(
+                    ruler.end
+                )
         );
-
-
-        rulersData =
-            rows
-                .slice(1)
-                .map(
-                    values => {
-
-
-                    const item = {};
-
-
-                    item.id =
-                        values[0]
-                        ?
-                        values[0].trim()
-                        :
-                        "";
-
-
-                    item.country =
-                        values[1]
-                        ?
-                        values[1].trim()
-                        :
-                        "";
-
-
-                    item.ruler =
-                        values[2]
-                        ?
-                        values[2].trim()
-                        :
-                        "";
-
-
-                    item.dynasty =
-                        values[3]
-                        ?
-                        values[3].trim()
-                        :
-                        "";
-
-
-                    item.start =
-                        Number(
-                            values[4]
-                        );
-
-
-                    item.end =
-                        Number(
-                            values[5]
-                        );
-
-
-                    item.description =
-                        values[6]
-                        ?
-                        values[6].trim()
-                        :
-                        "";
-
-
-                    item.wikipedia =
-                        values[7]
-                        ?
-                        values[7].trim()
-                        :
-                        "";
-
-
-                    return item;
-
                 })
                 .filter(
                     ruler =>
@@ -1406,44 +1417,69 @@ async function loadPodcastsSheet() {
         );
 
 
-        podcastsData =
-            rows
-                .slice(1)
-                .map(
-                    values => {
+const headers =
+    rows[0].map(
+        header =>
+            header.trim()
+    );
 
-                    return {
 
-                        ruler_id:
-                            values[0]
-                            ?
-                            values[0].trim()
-                            :
-                            "",
+console.log(
+    "Podcast Google Sheet 欄位：",
+    headers
+);
 
-                        url:
-                            values[1]
-                            ?
-                            values[1].trim()
-                            :
-                            "",
 
-                        order:
-                            Number(
-                                values[2]
-                            )
-                            || 0,
+podcastsData =
+    rows
+        .slice(1)
+        .map(
+            values => {
 
-                        title:
-                            values[3]
-                            ?
-                            values[3].trim()
-                            :
-                            ""
+                const get =
+                    columnName => {
+
+                        const index =
+                            headers.indexOf(
+                                columnName
+                            );
+
+
+                        return index !== -1
+                            && values[index] !== undefined
+                            ? values[index].trim()
+                            : "";
 
                     };
 
-                })
+
+                return {
+
+                    ruler_id:
+                        get("ruler_id"),
+
+                    url:
+                        get("url"),
+
+                    order:
+                        Number(
+                            get("order")
+                        )
+                        || 0,
+
+                    title:
+                        get("Title")
+
+                };
+
+            }
+        )
+        .filter(
+            podcast =>
+                podcast.ruler_id
+                &&
+                podcast.url
+        );
                 .filter(
                     podcast =>
                         podcast.ruler_id
