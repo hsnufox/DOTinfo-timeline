@@ -654,6 +654,17 @@ function showRuler(
 
         </div>
 
+<div class="info-item">
+
+    <div class="info-label">
+        人物介紹
+    </div>
+
+    <div class="info-value">
+        ${ruler.description || "目前沒有介紹資料。"}
+    </div>
+
+</div>
 
         <hr>
 
@@ -727,32 +738,36 @@ async function loadGoogleSheet() {
                     row.split(",");
 
 
-                return {
+               return {
 
-                    id:
-                        values[0].trim(),
+    id:
+        values[0].trim(),
 
-                    country:
-                        values[1].trim(),
+    country:
+        values[1].trim(),
 
-                    ruler:
-                        values[2].trim(),
+    ruler:
+        values[2].trim(),
 
-                    dynasty:
-                        values[3].trim(),
+    dynasty:
+        values[3].trim(),
 
-                    start:
-                        Number(
-                            values[4].trim()
-                        ),
+    start:
+        Number(
+            values[4].trim()
+        ),
 
-                    end:
-                        Number(
-                            values[5].trim()
-                        )
+    end:
+        Number(
+            values[5].trim()
+        ),
 
-                };
+    description:
+        values[6] ?
+        values[6].trim() :
+        ""
 
+};
             });
 
 
