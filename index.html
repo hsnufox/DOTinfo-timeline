@@ -675,26 +675,48 @@ function showRuler(
                 🎧 Podcast
             </div>
 
-            <p>
-                之後可以在這裡放
-                Spotify / YouTube
-                Podcast 播放器。
-            </p>
+            <div class="info-item">
 
-        </div>
+    <div class="info-label">
+        🎧 Podcast / YouTube
+    </div>
+
+    ${
+        ruler.podcast
+        ?
+        `<a
+            href="${ruler.podcast}"
+            target="_blank"
+            rel="noopener noreferrer">
+            開啟影音內容
+        </a>`
+        :
+        `<p>目前沒有影音連結。</p>`
+    }
+
+</div>
 
 
-        <div class="info-item">
+<div class="info-item">
 
-            <div class="info-label">
-                📚 延伸閱讀
-            </div>
+    <div class="info-label">
+        📚 Wikipedia
+    </div>
 
-            <a href="#">
-                Wikipedia
-            </a>
+    ${
+        ruler.wikipedia
+        ?
+        `<a
+            href="${ruler.wikipedia}"
+            target="_blank"
+            rel="noopener noreferrer">
+            閱讀 Wikipedia
+        </a>`
+        :
+        `<p>目前沒有 Wikipedia 連結。</p>`
+    }
 
-        </div>
+</div>
 
     `;
 
@@ -765,6 +787,16 @@ async function loadGoogleSheet() {
     description:
         values[6] ?
         values[6].trim() :
+        ""
+
+    wikipedia:
+        values[7] ?
+        values[7].trim() :
+        "",
+
+    podcast:
+        values[8] ?
+        values[8].trim() :
         ""
 
 };
