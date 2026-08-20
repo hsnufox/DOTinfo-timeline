@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -8,7 +9,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>歐洲歷史互動時間軸</title>ㄑ
+<title>歐洲歷史互動時間軸</title>
 
 
 <style>
@@ -422,7 +423,8 @@ const END_YEAR = 1600;
 
 
 /* ===================================
-   歷史資料
+   原始歷史資料
+   暫時保留
 =================================== */
 
 const countries = [
@@ -591,163 +593,6 @@ function createYears() {
 
 
 /* ===================================
-   建立時間軸
-=================================== */
-
-function createTimeline() {
-
-    const timeline =
-        document.getElementById("timeline");
-
-
-    countries.forEach(country => {
-
-
-        const countryElement =
-            document.createElement("div");
-
-
-        countryElement.className =
-            "country";
-
-
-        /* 國家名稱 */
-
-        const countryName =
-            document.createElement("div");
-
-
-        countryName.className =
-            "country-name";
-
-
-        countryName.innerText =
-            country.name;
-
-
-        countryElement.appendChild(
-            countryName
-        );
-
-
-        /* 君王區域 */
-
-        const rulers =
-            document.createElement("div");
-
-
-        rulers.className =
-            "rulers";
-
-
-        country.rulers.forEach(
-            (ruler, index) => {
-
-
-            const button =
-                document.createElement("button");
-
-
-            button.className =
-                "ruler "
-                +
-                country.className;
-
-
-            /* =========================
-               核心：
-               用年份自動計算位置
-            ========================= */
-
-            const left =
-                yearToPercent(
-                    ruler.start
-                );
-
-
-            const width =
-                yearToPercent(
-                    ruler.end
-                )
-                -
-                yearToPercent(
-                    ruler.start
-                );
-
-
-            button.style.left =
-                left + "%";
-
-
-            button.style.width =
-                width + "%";
-
-
-            /*
-                同一國家如果君王重疊，
-                就讓他們上下排列。
-            */
-
-            button.style.top =
-                (index % 2) * 55
-                + 10
-                + "px";
-
-
-            button.innerHTML = `
-
-                <div class="ruler-name">
-
-                    ${ruler.name}
-
-                </div>
-
-                <div class="ruler-years">
-
-                    ${ruler.start}
-                    –
-                    ${ruler.end}
-
-                </div>
-
-            `;
-
-
-            /* 點擊 */
-
-            button.onclick =
-                function() {
-
-                    showRuler(
-                        ruler,
-                        country
-                    );
-
-                };
-
-
-            rulers.appendChild(
-                button
-            );
-
-        });
-
-
-        countryElement.appendChild(
-            rulers
-        );
-
-
-        timeline.appendChild(
-            countryElement
-        );
-
-    });
-
-}
-
-
-/* ===================================
    顯示君王資訊
 =================================== */
 
@@ -765,7 +610,7 @@ function showRuler(
     panel.innerHTML = `
 
         <h2>
-            ${ruler.name}
+            ${ruler.ruler || ruler.name}
         </h2>
 
 
@@ -835,9 +680,7 @@ function showRuler(
             </div>
 
             <a href="#">
-
                 Wikipedia
-
             </a>
 
         </div>
@@ -845,6 +688,8 @@ function showRuler(
     `;
 
 }
+
+
 /* ===================================
    Google Sheet → 建立時間軸
 =================================== */
@@ -860,10 +705,15 @@ async function loadGoogleSheet() {
         const response =
             await fetch(sheetURL);
 
+
         const csv =
             await response.text();
 
-        console.log("Google Sheets 原始資料：", csv);
+
+        console.log(
+            "Google Sheets 原始資料：",
+            csv
+        );
 
 
         const rows =
@@ -876,19 +726,30 @@ async function loadGoogleSheet() {
                 const values =
                     row.split(",");
 
+
                 return {
 
-                    id: values[0].trim(),
+                    id:
+                        values[0].trim(),
 
-                    country: values[1].trim(),
+                    country:
+                        values[1].trim(),
 
-                    ruler: values[2].trim(),
+                    ruler:
+                        values[2].trim(),
 
-                    dynasty: values[3].trim(),
+                    dynasty:
+                        values[3].trim(),
 
-                    start: Number(values[4].trim()),
+                    start:
+                        Number(
+                            values[4].trim()
+                        ),
 
-                    end: Number(values[5].trim())
+                    end:
+                        Number(
+                            values[5].trim()
+                        )
 
                 };
 
@@ -923,7 +784,10 @@ async function loadGoogleSheet() {
 function createTimelineFromSheet(data) {
 
     const timeline =
-        document.getElementById("timeline");
+        document.getElementById(
+            "timeline"
+        );
+
 
     timeline.innerHTML = "";
 
@@ -937,13 +801,22 @@ function createTimelineFromSheet(data) {
 
     data.forEach(ruler => {
 
-        if (!groupedCountries[ruler.country]) {
+        if (
+            !groupedCountries[
+                ruler.country
+            ]
+        ) {
 
-            groupedCountries[ruler.country] = [];
+            groupedCountries[
+                ruler.country
+            ] = [];
 
         }
 
-        groupedCountries[ruler.country].push(ruler);
+
+        groupedCountries[
+            ruler.country
+        ].push(ruler);
 
     });
 
@@ -952,12 +825,17 @@ function createTimelineFromSheet(data) {
        建立每個國家
     ========================= */
 
-    Object.keys(groupedCountries).forEach(
+    Object.keys(
+        groupedCountries
+    ).forEach(
         countryName => {
 
 
         const countryElement =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         countryElement.className =
             "country";
@@ -966,13 +844,18 @@ function createTimelineFromSheet(data) {
         /* 國家名稱 */
 
         const countryNameElement =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         countryNameElement.className =
             "country-name";
 
+
         countryNameElement.innerText =
             countryName;
+
 
         countryElement.appendChild(
             countryNameElement
@@ -982,7 +865,10 @@ function createTimelineFromSheet(data) {
         /* 君王區域 */
 
         const rulers =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         rulers.className =
             "rulers";
@@ -992,22 +878,30 @@ function createTimelineFromSheet(data) {
            建立君王
         ========================= */
 
-        groupedCountries[countryName].forEach(
+        groupedCountries[
+            countryName
+        ].forEach(
             (ruler, index) => {
 
 
             const button =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
 
-            /* 國家顏色 */
+            /* =========================
+               國家顏色
+            ========================= */
 
             let countryClass =
                 "england";
 
 
             if (
-                countryName.includes("法國")
+                countryName.includes(
+                    "法國"
+                )
             ) {
 
                 countryClass =
@@ -1017,7 +911,9 @@ function createTimelineFromSheet(data) {
 
 
             if (
-                countryName.includes("神聖羅馬帝國")
+                countryName.includes(
+                    "神聖羅馬帝國"
+                )
             ) {
 
                 countryClass =
@@ -1027,7 +923,9 @@ function createTimelineFromSheet(data) {
 
 
             button.className =
-                "ruler " + countryClass;
+                "ruler "
+                +
+                countryClass;
 
 
             /* =========================
@@ -1073,17 +971,13 @@ function createTimelineFromSheet(data) {
             button.innerHTML = `
 
                 <div class="ruler-name">
-
                     ${ruler.ruler}
-
                 </div>
 
                 <div class="ruler-years">
-
                     ${ruler.start}
                     –
                     ${ruler.end}
-
                 </div>
 
             `;
@@ -1126,13 +1020,14 @@ function createTimelineFromSheet(data) {
     });
 
 }
+
+
 /* ===================================
    啟動
 =================================== */
 
-      
 createYears();
-      
+
 loadGoogleSheet();
 
 </script>
@@ -1141,3 +1036,4 @@ loadGoogleSheet();
 </body>
 
 </html>
+```
