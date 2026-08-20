@@ -906,6 +906,7 @@ async function loadGoogleSheet() {
             data
         );
 
+          createTimelineFromSheet(data);
 
     } catch (error) {
 
@@ -917,14 +918,141 @@ async function loadGoogleSheet() {
     }
 
 }
+
+      /* ===================================
+   用 Google Sheet 建立時間軸
+=================================== */
+
+function createTimelineFromSheet(data) {
+
+    const timeline =
+        document.getElementById("timeline");
+
+    timeline.innerHTML = "";
+
+    const groupedCountries = {};
+
+    data.forEach(ruler => {
+
+        if (!groupedCountries[ruler.country]) {
+
+            groupedCountries[ruler.country] = [];
+
+        }
+
+        groupedCountries[ruler.country].push(ruler);
+
+    });
+
+
+    Object.keys(groupedCountries).forEach(countryName => {
+
+        const countryElement =
+            document.createElement("div");
+
+        countryElement.className = "country";
+
+
+        /* 國家名稱 */
+
+        const countryNameElement =
+            document.createElement("div");
+
+        countryNameElement.className =
+            "country-name";
+
+        countryNameElement.innerText =
+            countryName;
+
+        countryElement.appendChild(
+            countryNameElement
+        );
+
+
+        /* 君王區域 */
+
+        const rulers =
+            document.createElement("div");
+
+        rulers.className = "rulers";
+
+
+        groupedCountries[countryName].forEach(
+            (ruler, index) => {
+
+                const button =
+                    document.createElement("button");
+
+                button.className =
+                    "ruler england";
+
+
+                const left =
+                    yearToPercent(ruler.start);
+
+                const width =
+                    yearToPercent(ruler.end)
+                    -
+                    yearToPercent(ruler.start);
+
+
+                button.style.left =
+                    left + "%";
+
+                button.style.width =
+                    width + "%";
+
+
+                button.style.top =
+                    (index % 2) * 55
+                    + 10
+                    + "px";
+
+
+                button.innerHTML = `
+
+                    <div class="ruler-name">
+                        ${ruler.ruler}
+                    </div>
+
+                    <div class="ruler-years">
+                        ${ruler.start} – ${ruler.end}
+                    </div>
+
+                `;
+
+
+                button.onclick = function() {
+
+                    showRuler(
+                        ruler,
+                        {
+                            name: countryName
+                        }
+                    );
+
+                };
+
+
+                rulers.appendChild(button);
+
+            }
+        );
+
+
+        countryElement.appendChild(rulers);
+
+        timeline.appendChild(countryElement);
+
+    });
+
+}
 /* ===================================
    啟動
 =================================== */
 
       
 createYears();
-      
-createTimeline();
       
 loadGoogleSheet();
 
