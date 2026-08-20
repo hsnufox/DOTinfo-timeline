@@ -1408,6 +1408,74 @@ async function loadPodcastsSheet() {
 }
 
 /* ===================================
+   測試 Apple Podcast
+=================================== */
+
+async function testApplePodcast() {
+
+    const testURL =
+        "https://podcasts.apple.com/tw/podcast/%E6%99%82%E9%96%93%E7%9A%84%E5%A5%B3%E5%85%92-%E5%85%AB%E5%8D%A6%E6%AD%B7%E5%8F%B2/id1549521834?i=1000505640715";
+
+
+    console.log(
+        "開始測試 Apple Podcast：",
+        testURL
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "https://itunes.apple.com/lookup?id=1000505640715&entity=podcastEpisode"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Apple Podcast API 回傳：",
+            data
+        );
+
+
+        if (
+            data.results
+            &&
+            data.results.length > 0
+        ) {
+
+            console.log(
+                "🎧 Podcast 單集名稱：",
+                data.results[0].trackName
+            );
+
+        } else {
+
+            console.log(
+                "找不到這一集 Podcast"
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Apple Podcast API 讀取失敗：",
+            error
+        );
+
+    }
+
+}
+
+      
+
+/* ===================================
    啟動
 =================================== */
 
@@ -1415,7 +1483,9 @@ createYears();
 
 loadRulersSheet();
 
-      loadPodcastsSheet();
+loadPodcastsSheet();
+
+testApplePodcast();
 
 </script>
 
