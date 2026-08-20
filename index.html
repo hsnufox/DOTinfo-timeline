@@ -304,6 +304,8 @@ header p {
     font-size: 16px;
 
     font-weight: 500;
+
+    line-height: 1.6;
 }
 
 
@@ -314,6 +316,20 @@ header p {
     border-top: 1px solid #ddd;
 
     margin: 20px 0;
+}
+
+
+.info-panel a {
+
+    color: #4267a9;
+
+    text-decoration: none;
+}
+
+
+.info-panel a:hover {
+
+    text-decoration: underline;
 }
 
 
@@ -370,15 +386,11 @@ England · France · Holy Roman Empire
 <div class="timeline-area">
 
 
-<!-- 年份 -->
-
 <div
     class="years"
     id="years">
 </div>
 
-
-<!-- 國家 -->
 
 <div id="timeline"></div>
 
@@ -423,124 +435,6 @@ const END_YEAR = 1600;
 
 
 /* ===================================
-   原始歷史資料
-   暫時保留
-=================================== */
-
-const countries = [
-
-    {
-
-        name: "🇬🇧 英格蘭",
-
-        className: "england",
-
-        rulers: [
-
-            {
-                name: "William I",
-                start: 1066,
-                end: 1087,
-                dynasty: "Norman"
-            },
-
-            {
-                name: "Henry I",
-                start: 1100,
-                end: 1135,
-                dynasty: "Norman"
-            },
-
-            {
-                name: "Henry II",
-                start: 1154,
-                end: 1189,
-                dynasty: "Plantagenet"
-            },
-
-            {
-                name: "Henry VIII",
-                start: 1509,
-                end: 1547,
-                dynasty: "Tudor"
-            }
-
-        ]
-
-    },
-
-
-    {
-
-        name: "🇫🇷 法國",
-
-        className: "france",
-
-        rulers: [
-
-            {
-                name: "Philip VI",
-                start: 1328,
-                end: 1350,
-                dynasty: "Valois"
-            },
-
-            {
-                name: "Charles V",
-                start: 1364,
-                end: 1380,
-                dynasty: "Valois"
-            },
-
-            {
-                name: "Francis I",
-                start: 1515,
-                end: 1547,
-                dynasty: "Valois-Angoulême"
-            }
-
-        ]
-
-    },
-
-
-    {
-
-        name: "🏰 神聖羅馬帝國",
-
-        className: "hre",
-
-        rulers: [
-
-            {
-                name: "Henry II",
-                start: 1002,
-                end: 1024,
-                dynasty: "Ottonian"
-            },
-
-            {
-                name: "Frederick I",
-                start: 1152,
-                end: 1190,
-                dynasty: "Hohenstaufen"
-            },
-
-            {
-                name: "Charles V",
-                start: 1519,
-                end: 1556,
-                dynasty: "Habsburg"
-            }
-
-        ]
-
-    }
-
-];
-
-
-/* ===================================
    年份 → 百分比
 =================================== */
 
@@ -565,6 +459,9 @@ function createYears() {
         document.getElementById("years");
 
 
+    years.innerHTML = "";
+
+
     for (
         let year = START_YEAR;
         year <= END_YEAR;
@@ -575,10 +472,12 @@ function createYears() {
             document.createElement("div");
 
 
-        element.className = "year";
+        element.className =
+            "year";
 
 
-        element.innerText = year;
+        element.innerText =
+            year;
 
 
         element.style.left =
@@ -610,7 +509,7 @@ function showRuler(
     panel.innerHTML = `
 
         <h2>
-            ${ruler.ruler || ruler.name}
+            ${ruler.ruler}
         </h2>
 
 
@@ -654,17 +553,25 @@ function showRuler(
 
         </div>
 
-<div class="info-item">
 
-    <div class="info-label">
-        人物介紹
-    </div>
+        <div class="info-item">
 
-    <div class="info-value">
-        ${ruler.description || "目前沒有介紹資料。"}
-    </div>
+            <div class="info-label">
+                人物介紹
+            </div>
 
-</div>
+            <div class="info-value">
+
+                ${
+                    ruler.description
+                    ||
+                    "目前沒有介紹資料。"
+                }
+
+            </div>
+
+        </div>
+
 
         <hr>
 
@@ -672,51 +579,61 @@ function showRuler(
         <div class="info-item">
 
             <div class="info-label">
-                🎧 Podcast
+                🎧 Podcast / YouTube
             </div>
 
-            <div class="info-item">
+            ${
+                ruler.podcast
+                ?
+                `
+                <a
+                    href="${ruler.podcast}"
+                    target="_blank"
+                    rel="noopener noreferrer">
 
-    <div class="info-label">
-        🎧 Podcast / YouTube
-    </div>
+                    開啟影音內容
 
-    ${
-        ruler.podcast
-        ?
-        `<a
-            href="${ruler.podcast}"
-            target="_blank"
-            rel="noopener noreferrer">
-            開啟影音內容
-        </a>`
-        :
-        `<p>目前沒有影音連結。</p>`
-    }
+                </a>
+                `
+                :
+                `
+                <p>
+                    目前沒有影音連結。
+                </p>
+                `
+            }
 
-</div>
+        </div>
 
 
-<div class="info-item">
+        <div class="info-item">
 
-    <div class="info-label">
-        📚 Wikipedia
-    </div>
+            <div class="info-label">
+                📚 Wikipedia
+            </div>
 
-    ${
-        ruler.wikipedia
-        ?
-        `<a
-            href="${ruler.wikipedia}"
-            target="_blank"
-            rel="noopener noreferrer">
-            閱讀 Wikipedia
-        </a>`
-        :
-        `<p>目前沒有 Wikipedia 連結。</p>`
-    }
+            ${
+                ruler.wikipedia
+                ?
+                `
+                <a
+                    href="${ruler.wikipedia}"
+                    target="_blank"
+                    rel="noopener noreferrer">
 
-</div>
+                    閱讀 Wikipedia
+
+                </a>
+                `
+                :
+                `
+                <p>
+                    目前沒有 Wikipedia 連結。
+                </p>
+                `
+            }
+
+        </div>
 
     `;
 
@@ -724,7 +641,7 @@ function showRuler(
 
 
 /* ===================================
-   Google Sheet → 建立時間軸
+   Google Sheet
 =================================== */
 
 async function loadGoogleSheet() {
@@ -739,6 +656,15 @@ async function loadGoogleSheet() {
             await fetch(sheetURL);
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "Google Sheet 無法讀取"
+            );
+
+        }
+
+
         const csv =
             await response.text();
 
@@ -750,56 +676,91 @@ async function loadGoogleSheet() {
 
 
         const rows =
-            csv.trim().split(/\r?\n/);
+            csv
+            .trim()
+            .split(/\r?\n/);
 
 
         const data =
-            rows.slice(1).map(row => {
+            rows
+            .slice(1)
+            .map(row => {
 
                 const values =
                     row.split(",");
 
 
-               return {
+                return {
 
-    id:
-        values[0].trim(),
+                    id:
+                        values[0]
+                        ?
+                        values[0].trim()
+                        :
+                        "",
 
-    country:
-        values[1].trim(),
+                    country:
+                        values[1]
+                        ?
+                        values[1].trim()
+                        :
+                        "",
 
-    ruler:
-        values[2].trim(),
+                    ruler:
+                        values[2]
+                        ?
+                        values[2].trim()
+                        :
+                        "",
 
-    dynasty:
-        values[3].trim(),
+                    dynasty:
+                        values[3]
+                        ?
+                        values[3].trim()
+                        :
+                        "",
 
-    start:
-        Number(
-            values[4].trim()
-        ),
+                    start:
+                        values[4]
+                        ?
+                        Number(
+                            values[4].trim()
+                        )
+                        :
+                        NaN,
 
-    end:
-        Number(
-            values[5].trim()
-        ),
+                    end:
+                        values[5]
+                        ?
+                        Number(
+                            values[5].trim()
+                        )
+                        :
+                        NaN,
 
-    description:
-        values[6] ?
-        values[6].trim() :
-        ""
+                    description:
+                        values[6]
+                        ?
+                        values[6].trim()
+                        :
+                        "",
 
-    wikipedia:
-        values[7] ?
-        values[7].trim() :
-        "",
+                    wikipedia:
+                        values[7]
+                        ?
+                        values[7].trim()
+                        :
+                        "",
 
-    podcast:
-        values[8] ?
-        values[8].trim() :
-        ""
+                    podcast:
+                        values[8]
+                        ?
+                        values[8].trim()
+                        :
+                        ""
 
-};
+                };
+
             });
 
 
@@ -809,7 +770,9 @@ async function loadGoogleSheet() {
         );
 
 
-        createTimelineFromSheet(data);
+        createTimelineFromSheet(
+            data
+        );
 
 
     } catch (error) {
@@ -825,10 +788,12 @@ async function loadGoogleSheet() {
 
 
 /* ===================================
-   使用 Google Sheet 建立時間軸
+   Google Sheet → 時間軸
 =================================== */
 
-function createTimelineFromSheet(data) {
+function createTimelineFromSheet(
+    data
+) {
 
     const timeline =
         document.getElementById(
@@ -840,13 +805,35 @@ function createTimelineFromSheet(data) {
 
 
     /* =========================
+       過濾無效資料
+    ========================= */
+
+    const validData =
+        data.filter(ruler => {
+
+            return (
+                ruler.country &&
+                ruler.ruler &&
+                Number.isFinite(
+                    ruler.start
+                ) &&
+                Number.isFinite(
+                    ruler.end
+                )
+            );
+
+        });
+
+
+    /* =========================
        按國家分類
     ========================= */
 
     const groupedCountries = {};
 
 
-    data.forEach(ruler => {
+    validData.forEach(
+        ruler => {
 
         if (
             !groupedCountries[
@@ -869,7 +856,7 @@ function createTimelineFromSheet(data) {
 
 
     /* =========================
-       建立每個國家
+       建立國家列
     ========================= */
 
     Object.keys(
@@ -1003,7 +990,9 @@ function createTimelineFromSheet(data) {
                 width + "%";
 
 
-            /* 上下排列 */
+            /* =========================
+               上下排列
+            ========================= */
 
             button.style.top =
                 (index % 2) * 55
@@ -1012,26 +1001,30 @@ function createTimelineFromSheet(data) {
 
 
             /* =========================
-               顯示文字
+               君王文字
             ========================= */
 
             button.innerHTML = `
 
                 <div class="ruler-name">
+
                     ${ruler.ruler}
+
                 </div>
 
                 <div class="ruler-years">
+
                     ${ruler.start}
                     –
                     ${ruler.end}
+
                 </div>
 
             `;
 
 
             /* =========================
-               點擊君王
+               點擊事件
             ========================= */
 
             button.onclick =
