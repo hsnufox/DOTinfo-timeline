@@ -2,281 +2,341 @@
 <html lang="zh-Hant">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>歐洲歷史互動時間軸</title>
+<meta charset="UTF-8">
 
-    <style>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        * {
-            box-sizing: border-box;
-        }
+<title>歐洲歷史互動時間軸</title>
 
-        body {
-            margin: 0;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                "Noto Sans TC",
-                sans-serif;
 
-            background: #f5f3ef;
-            color: #292929;
-        }
+<style>
 
-        /* ===== 頁面標題 ===== */
+/* =========================
+   基本設定
+========================= */
 
-        header {
-            background: #222;
-            color: white;
+* {
+    box-sizing: border-box;
+}
 
-            padding: 30px 40px;
-        }
+body {
 
-        header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-        }
+    margin: 0;
 
-        header p {
-            margin: 0;
-            color: #ccc;
-        }
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        sans-serif;
 
+    background: #f5f3ef;
 
-        /* ===== 主要區域 ===== */
+    color: #292929;
+}
 
-        .container {
-            display: flex;
 
-            padding: 30px;
+/* =========================
+   標題
+========================= */
 
-            gap: 25px;
-        }
+header {
 
+    background: #222;
 
-        /* ===== 時間軸 ===== */
+    color: white;
 
-        .timeline-area {
+    padding: 30px 40px;
+}
 
-            flex: 1;
+header h1 {
 
-            background: white;
+    margin: 0 0 8px;
 
-            border-radius: 12px;
+    font-size: 30px;
+}
 
-            padding: 25px;
+header p {
 
-            overflow-x: auto;
-        }
+    margin: 0;
 
+    color: #ccc;
+}
 
-        /* ===== 年份 ===== */
 
-        .years {
+/* =========================
+   主畫面
+========================= */
 
-            display: grid;
+.container {
 
-            grid-template-columns:
-                160px
-                repeat(7, 1fr);
+    display: flex;
 
-            min-width: 900px;
+    gap: 25px;
 
-            margin-bottom: 20px;
+    padding: 30px;
+}
 
-            font-size: 14px;
 
-            color: #777;
-        }
+/* =========================
+   時間軸區域
+========================= */
 
+.timeline-area {
 
-        /* ===== 國家 ===== */
+    flex: 1;
 
-        .country {
+    background: white;
 
-            min-width: 900px;
+    border-radius: 12px;
 
-            display: grid;
+    padding: 25px;
 
-            grid-template-columns: 160px 1fr;
+    overflow-x: auto;
+}
 
-            min-height: 130px;
 
-            border-top: 1px solid #ddd;
-        }
+/* =========================
+   年份
+========================= */
 
+.years {
 
-        .country-name {
+    position: relative;
 
-            padding: 20px 10px;
+    height: 35px;
 
-            font-weight: bold;
+    margin-left: 160px;
 
-            font-size: 17px;
-        }
+    min-width: 900px;
 
+    border-bottom: 1px solid #ddd;
+}
 
-        /* ===== 君王區域 ===== */
+.year {
 
-        .rulers {
+    position: absolute;
 
-            position: relative;
+    top: 0;
 
-            height: 130px;
-        }
+    transform: translateX(-50%);
 
+    color: #777;
 
-        /* ===== 君王長條 ===== */
+    font-size: 13px;
+}
 
-        .ruler {
 
-            position: absolute;
+/* =========================
+   國家
+========================= */
 
-            height: 42px;
+.country {
 
-            border-radius: 7px;
+    display: grid;
 
-            color: white;
+    grid-template-columns: 160px 1fr;
 
-            padding: 7px 10px;
+    min-width: 900px;
 
-            cursor: pointer;
+    min-height: 140px;
 
-            border: none;
+    border-bottom: 1px solid #ddd;
+}
 
-            font-size: 13px;
 
-            text-align: left;
+.country-name {
 
-            transition: 0.2s;
+    padding: 25px 10px;
 
-            overflow: hidden;
-        }
+    font-weight: bold;
 
+    font-size: 17px;
+}
 
-        .ruler:hover {
 
-            transform: translateY(-2px);
+/* =========================
+   君王區域
+========================= */
 
-            box-shadow:
-                0 5px 12px rgba(0,0,0,0.18);
-        }
+.rulers {
 
+    position: relative;
 
-        .ruler small {
+    height: 140px;
+}
 
-            display: block;
 
-            opacity: 0.85;
+/* =========================
+   君王長條
+========================= */
 
-            margin-top: 3px;
-        }
+.ruler {
 
+    position: absolute;
 
-        /* ===== 不同國家顏色 ===== */
+    height: 42px;
 
-        .england {
-            background: #5b7db1;
-        }
+    border: none;
 
-        .france {
-            background: #b85c5c;
-        }
+    border-radius: 7px;
 
-        .hre {
-            background: #8b6aa9;
-        }
+    padding: 6px 10px;
 
+    color: white;
 
-        /* ===== 資訊面板 ===== */
+    text-align: left;
 
-        .info-panel {
+    cursor: pointer;
 
-            width: 330px;
+    overflow: hidden;
 
-            background: white;
+    transition: 0.2s;
+}
 
-            border-radius: 12px;
+.ruler:hover {
 
-            padding: 25px;
+    transform: translateY(-2px);
 
-            height: fit-content;
+    box-shadow:
+        0 5px 12px
+        rgba(0,0,0,0.2);
+}
 
-            position: sticky;
 
-            top: 20px;
+.ruler-name {
 
-            box-shadow:
-                0 3px 15px rgba(0,0,0,0.08);
-        }
+    font-size: 13px;
 
+    font-weight: 600;
 
-        .info-panel h2 {
+    white-space: nowrap;
+}
 
-            margin-top: 0;
 
-            font-size: 24px;
-        }
+.ruler-years {
 
+    font-size: 10px;
 
-        .info-panel hr {
+    margin-top: 3px;
 
-            border: none;
+    opacity: 0.85;
 
-            border-top: 1px solid #ddd;
+    white-space: nowrap;
+}
 
-            margin: 20px 0;
-        }
 
+/* =========================
+   國家顏色
+========================= */
 
-        .info-item {
+.england {
 
-            margin-bottom: 15px;
-        }
+    background: #5b7db1;
+}
 
+.france {
 
-        .info-label {
+    background: #b85c5c;
+}
 
-            color: #888;
+.hre {
 
-            font-size: 12px;
+    background: #8b6aa9;
+}
 
-            margin-bottom: 4px;
-        }
 
+/* =========================
+   資訊面板
+========================= */
 
-        .info-value {
+.info-panel {
 
-            font-size: 16px;
+    width: 330px;
 
-            font-weight: 500;
-        }
+    background: white;
 
+    border-radius: 12px;
 
-        /* ===== 手機版 ===== */
+    padding: 25px;
 
-        @media (max-width: 900px) {
+    height: fit-content;
 
-            .container {
+    position: sticky;
 
-                flex-direction: column;
+    top: 20px;
 
-            }
+    box-shadow:
+        0 3px 15px
+        rgba(0,0,0,0.08);
+}
 
-            .info-panel {
 
-                width: 100%;
+.info-panel h2 {
 
-                position: relative;
+    margin-top: 0;
 
-            }
+    font-size: 24px;
+}
 
-        }
 
-    </style>
+.info-item {
+
+    margin-bottom: 16px;
+}
+
+
+.info-label {
+
+    font-size: 12px;
+
+    color: #888;
+
+    margin-bottom: 4px;
+}
+
+
+.info-value {
+
+    font-size: 16px;
+
+    font-weight: 500;
+}
+
+
+.info-panel hr {
+
+    border: none;
+
+    border-top: 1px solid #ddd;
+
+    margin: 20px 0;
+}
+
+
+/* =========================
+   手機版
+========================= */
+
+@media (max-width: 900px) {
+
+    .container {
+
+        flex-direction: column;
+    }
+
+    .info-panel {
+
+        width: 100%;
+
+        position: relative;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -286,12 +346,14 @@
 
 <header>
 
-    <h1>歐洲歷史互動時間軸</h1>
+<h1>
+歐洲歷史互動時間軸
+</h1>
 
-    <p>
-        England · France · Holy Roman Empire
-        ｜1000–1600
-    </p>
+<p>
+England · France · Holy Roman Empire
+｜1000–1600
+</p>
 
 </header>
 
@@ -300,300 +362,48 @@
 <div class="container">
 
 
-    <!-- ========================= -->
-    <!-- 時間軸 -->
-    <!-- ========================= -->
+<!-- =================================
+     時間軸
+================================= -->
 
-    <div class="timeline-area">
+<div class="timeline-area">
 
 
-        <!-- 年份 -->
+<!-- 年份 -->
 
-        <div class="years">
+<div
+    class="years"
+    id="years">
+</div>
 
-            <div></div>
 
-            <div>1000</div>
+<!-- 國家 -->
 
-            <div>1100</div>
+<div id="timeline"></div>
 
-            <div>1200</div>
 
-            <div>1300</div>
+</div>
 
-            <div>1400</div>
 
-            <div>1500</div>
 
-            <div>1600</div>
+<!-- =================================
+     資訊面板
+================================= -->
 
-        </div>
+<aside
+    class="info-panel"
+    id="infoPanel">
 
+<h2>
+選擇一位君王
+</h2>
 
+<p>
+點擊時間軸上的君王，
+這裡會顯示詳細資訊。
+</p>
 
-        <!-- ========================= -->
-        <!-- 英格蘭 -->
-        <!-- ========================= -->
-
-        <div class="country">
-
-            <div class="country-name">
-
-                🇬🇧 英格蘭
-
-            </div>
-
-
-            <div class="rulers">
-
-
-                <button
-                    class="ruler england"
-                    style="left: 11%; width: 4%; top: 15px;"
-                    onclick="showRuler(
-                        'William I',
-                        '1066–1087',
-                        'Norman',
-                        'England'
-                    )"
-                >
-
-                    William I
-
-                    <small>1066–1087</small>
-
-                </button>
-
-
-                <button
-                    class="ruler england"
-                    style="left: 20%; width: 6%; top: 65px;"
-                    onclick="showRuler(
-                        'Henry I',
-                        '1100–1135',
-                        'Norman',
-                        'England'
-                    )"
-                >
-
-                    Henry I
-
-                    <small>1100–1135</small>
-
-                </button>
-
-
-                <button
-                    class="ruler england"
-                    style="left: 25%; width: 7%; top: 15px;"
-                    onclick="showRuler(
-                        'Henry II',
-                        '1154–1189',
-                        'Plantagenet',
-                        'England'
-                    )"
-                >
-
-                    Henry II
-
-                    <small>1154–1189</small>
-
-                </button>
-
-
-                <button
-                    class="ruler england"
-                    style="left: 69%; width: 7%; top: 65px;"
-                    onclick="showRuler(
-                        'Henry VIII',
-                        '1509–1547',
-                        'Tudor',
-                        'England'
-                    )"
-                >
-
-                    Henry VIII
-
-                    <small>1509–1547</small>
-
-                </button>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- 法國 -->
-        <!-- ========================= -->
-
-        <div class="country">
-
-            <div class="country-name">
-
-                🇫🇷 法國
-
-            </div>
-
-
-            <div class="rulers">
-
-
-                <button
-                    class="ruler france"
-                    style="left: 54%; width: 4%; top: 15px;"
-                    onclick="showRuler(
-                        'Philip VI',
-                        '1328–1350',
-                        'Valois',
-                        'France'
-                    )"
-                >
-
-                    Philip VI
-
-                    <small>1328–1350</small>
-
-                </button>
-
-
-                <button
-                    class="ruler france"
-                    style="left: 61%; width: 5%; top: 65px;"
-                    onclick="showRuler(
-                        'Charles V',
-                        '1364–1380',
-                        'Valois',
-                        'France'
-                    )"
-                >
-
-                    Charles V
-
-                    <small>1364–1380</small>
-
-                </button>
-
-
-                <button
-                    class="ruler france"
-                    style="left: 86%; width: 6%; top: 15px;"
-                    onclick="showRuler(
-                        'Francis I',
-                        '1515–1547',
-                        'Valois-Angoulême',
-                        'France'
-                    )"
-                >
-
-                    Francis I
-
-                    <small>1515–1547</small>
-
-                </button>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- 神聖羅馬帝國 -->
-        <!-- ========================= -->
-
-        <div class="country">
-
-            <div class="country-name">
-
-                🏰 神聖羅馬帝國
-
-            </div>
-
-
-            <div class="rulers">
-
-
-                <button
-                    class="ruler hre"
-                    style="left: 4%; width: 4%; top: 15px;"
-                    onclick="showRuler(
-                        'Henry II',
-                        '1002–1024',
-                        'Ottonian',
-                        'Holy Roman Empire'
-                    )"
-                >
-
-                    Henry II
-
-                    <small>1002–1024</small>
-
-                </button>
-
-
-                <button
-                    class="ruler hre"
-                    style="left: 25%; width: 7%; top: 65px;"
-                    onclick="showRuler(
-                        'Frederick I',
-                        '1152–1190',
-                        'Hohenstaufen',
-                        'Holy Roman Empire'
-                    )"
-                >
-
-                    Frederick I
-
-                    <small>1152–1190</small>
-
-                </button>
-
-
-                <button
-                    class="ruler hre"
-                    style="left: 87%; width: 7%; top: 15px;"
-                    onclick="showRuler(
-                        'Charles V',
-                        '1519–1556',
-                        'Habsburg',
-                        'Holy Roman Empire'
-                    )"
-                >
-
-                    Charles V
-
-                    <small>1519–1556</small>
-
-                </button>
-
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- ========================= -->
-    <!-- 資訊面板 -->
-    <!-- ========================= -->
-
-    <aside class="info-panel" id="infoPanel">
-
-        <h2>選擇一位君王</h2>
-
-        <p>
-            點擊左側時間軸上的君王，
-            這裡會顯示他的詳細資訊。
-        </p>
-
-    </aside>
+</aside>
 
 
 </div>
@@ -602,22 +412,361 @@
 
 <script>
 
+/* ===================================
+   時間範圍
+=================================== */
+
+const START_YEAR = 1000;
+
+const END_YEAR = 1600;
+
+
+/* ===================================
+   歷史資料
+=================================== */
+
+const countries = [
+
+    {
+
+        name: "🇬🇧 英格蘭",
+
+        className: "england",
+
+        rulers: [
+
+            {
+                name: "William I",
+                start: 1066,
+                end: 1087,
+                dynasty: "Norman"
+            },
+
+            {
+                name: "Henry I",
+                start: 1100,
+                end: 1135,
+                dynasty: "Norman"
+            },
+
+            {
+                name: "Henry II",
+                start: 1154,
+                end: 1189,
+                dynasty: "Plantagenet"
+            },
+
+            {
+                name: "Henry VIII",
+                start: 1509,
+                end: 1547,
+                dynasty: "Tudor"
+            }
+
+        ]
+
+    },
+
+
+    {
+
+        name: "🇫🇷 法國",
+
+        className: "france",
+
+        rulers: [
+
+            {
+                name: "Philip VI",
+                start: 1328,
+                end: 1350,
+                dynasty: "Valois"
+            },
+
+            {
+                name: "Charles V",
+                start: 1364,
+                end: 1380,
+                dynasty: "Valois"
+            },
+
+            {
+                name: "Francis I",
+                start: 1515,
+                end: 1547,
+                dynasty: "Valois-Angoulême"
+            }
+
+        ]
+
+    },
+
+
+    {
+
+        name: "🏰 神聖羅馬帝國",
+
+        className: "hre",
+
+        rulers: [
+
+            {
+                name: "Henry II",
+                start: 1002,
+                end: 1024,
+                dynasty: "Ottonian"
+            },
+
+            {
+                name: "Frederick I",
+                start: 1152,
+                end: 1190,
+                dynasty: "Hohenstaufen"
+            },
+
+            {
+                name: "Charles V",
+                start: 1519,
+                end: 1556,
+                dynasty: "Habsburg"
+            }
+
+        ]
+
+    }
+
+];
+
+
+/* ===================================
+   年份 → 百分比
+=================================== */
+
+function yearToPercent(year) {
+
+    return (
+        (year - START_YEAR)
+        /
+        (END_YEAR - START_YEAR)
+    ) * 100;
+
+}
+
+
+/* ===================================
+   建立年份
+=================================== */
+
+function createYears() {
+
+    const years =
+        document.getElementById("years");
+
+
+    for (
+        let year = START_YEAR;
+        year <= END_YEAR;
+        year += 100
+    ) {
+
+        const element =
+            document.createElement("div");
+
+
+        element.className = "year";
+
+
+        element.innerText = year;
+
+
+        element.style.left =
+            yearToPercent(year) + "%";
+
+
+        years.appendChild(element);
+
+    }
+
+}
+
+
+/* ===================================
+   建立時間軸
+=================================== */
+
+function createTimeline() {
+
+    const timeline =
+        document.getElementById("timeline");
+
+
+    countries.forEach(country => {
+
+
+        const countryElement =
+            document.createElement("div");
+
+
+        countryElement.className =
+            "country";
+
+
+        /* 國家名稱 */
+
+        const countryName =
+            document.createElement("div");
+
+
+        countryName.className =
+            "country-name";
+
+
+        countryName.innerText =
+            country.name;
+
+
+        countryElement.appendChild(
+            countryName
+        );
+
+
+        /* 君王區域 */
+
+        const rulers =
+            document.createElement("div");
+
+
+        rulers.className =
+            "rulers";
+
+
+        country.rulers.forEach(
+            (ruler, index) => {
+
+
+            const button =
+                document.createElement("button");
+
+
+            button.className =
+                "ruler "
+                +
+                country.className;
+
+
+            /* =========================
+               核心：
+               用年份自動計算位置
+            ========================= */
+
+            const left =
+                yearToPercent(
+                    ruler.start
+                );
+
+
+            const width =
+                yearToPercent(
+                    ruler.end
+                )
+                -
+                yearToPercent(
+                    ruler.start
+                );
+
+
+            button.style.left =
+                left + "%";
+
+
+            button.style.width =
+                width + "%";
+
+
+            /*
+                同一國家如果君王重疊，
+                就讓他們上下排列。
+            */
+
+            button.style.top =
+                (index % 2) * 55
+                + 10
+                + "px";
+
+
+            button.innerHTML = `
+
+                <div class="ruler-name">
+
+                    ${ruler.name}
+
+                </div>
+
+                <div class="ruler-years">
+
+                    ${ruler.start}
+                    –
+                    ${ruler.end}
+
+                </div>
+
+            `;
+
+
+            /* 點擊 */
+
+            button.onclick =
+                function() {
+
+                    showRuler(
+                        ruler,
+                        country
+                    );
+
+                };
+
+
+            rulers.appendChild(
+                button
+            );
+
+        });
+
+
+        countryElement.appendChild(
+            rulers
+        );
+
+
+        timeline.appendChild(
+            countryElement
+        );
+
+    });
+
+}
+
+
+/* ===================================
+   顯示君王資訊
+=================================== */
 
 function showRuler(
-    name,
-    years,
-    dynasty,
+    ruler,
     country
 ) {
 
-
     const panel =
-        document.getElementById("infoPanel");
+        document.getElementById(
+            "infoPanel"
+        );
 
 
     panel.innerHTML = `
 
-        <h2>${name}</h2>
+        <h2>
+            ${ruler.name}
+        </h2>
 
 
         <div class="info-item">
@@ -627,7 +776,7 @@ function showRuler(
             </div>
 
             <div class="info-value">
-                ${country}
+                ${country.name}
             </div>
 
         </div>
@@ -640,7 +789,9 @@ function showRuler(
             </div>
 
             <div class="info-value">
-                ${years}
+                ${ruler.start}
+                –
+                ${ruler.end}
             </div>
 
         </div>
@@ -653,7 +804,7 @@ function showRuler(
             </div>
 
             <div class="info-value">
-                ${dynasty}
+                ${ruler.dynasty}
             </div>
 
         </div>
@@ -668,13 +819,11 @@ function showRuler(
                 🎧 Podcast
             </div>
 
-            <div class="info-value">
-
-                <p>
-                    Podcast 播放器將放在這裡。
-                </p>
-
-            </div>
+            <p>
+                之後可以在這裡放
+                Spotify / YouTube
+                Podcast 播放器。
+            </p>
 
         </div>
 
@@ -685,13 +834,11 @@ function showRuler(
                 📚 延伸閱讀
             </div>
 
-            <div class="info-value">
+            <a href="#">
 
-                <a href="#">
-                    Wikipedia
-                </a>
+                Wikipedia
 
-            </div>
+            </a>
 
         </div>
 
@@ -699,6 +846,14 @@ function showRuler(
 
 }
 
+
+/* ===================================
+   啟動
+=================================== */
+
+createYears();
+
+createTimeline();
 
 </script>
 
