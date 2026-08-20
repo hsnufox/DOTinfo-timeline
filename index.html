@@ -690,76 +690,19 @@ async function loadGoogleSheet() {
                     row.split(",");
 
 
-                return {
+const item = {};
 
-                    id:
-                        values[0]
-                        ?
-                        values[0].trim()
-                        :
-                        "",
+item.id = values[0] || "";
+item.country = values[1] || "";
+item.ruler = values[2] || "";
+item.dynasty = values[3] || "";
+item.start = Number(values[4]);
+item.end = Number(values[5]);
+item.description = values[6] || "";
+item.wikipedia = values[7] || "";
+item.podcast = values[8] || "";
 
-                    country:
-                        values[1]
-                        ?
-                        values[1].trim()
-                        :
-                        "",
-
-                    ruler:
-                        values[2]
-                        ?
-                        values[2].trim()
-                        :
-                        "",
-
-                    dynasty:
-                        values[3]
-                        ?
-                        values[3].trim()
-                        :
-                        "",
-
-                    start:
-                        values[4]
-                        ?
-                        Number(
-                            values[4].trim()
-                        )
-                        :
-                        NaN,
-
-                    end:
-                        values[5]
-                        ?
-                        Number(
-                            values[5].trim()
-                        )
-                        :
-                        NaN,
-
-                    description:
-                        values[6]
-                        ?
-                        values[6].trim()
-                        :
-                        "",
-
-                    wikipedia:
-                        values[7]
-                        ?
-                        values[7].trim()
-                        :
-                        "",
-
-                    podcast:
-                        values[8]
-                        ?
-                        values[8].trim()
-                        :
-                        ""
-
-                };
+return item;
 
             });
 
