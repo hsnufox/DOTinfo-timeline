@@ -795,31 +795,23 @@ function createTimeline(
    顯示君王資訊
 =================================== */
 
-function showRuler(
-    ruler
-) {
+function showRuler(ruler) {
 
     const panel =
-        document.getElementById(
-            "infoPanel"
-        );
+        document.getElementById("infoPanel");
 
 
-    /*
-        找出這位君王的 Podcast
-    */
+    /* ===================================
+       找出這位君王的所有 Podcast
+    =================================== */
 
     const rulerPodcasts =
         podcastsData
             .filter(
                 podcast =>
-                    String(
-                        podcast.ruler_id
-                    )
+                    String(podcast.ruler_id)
                     ===
-                    String(
-                        ruler.id
-                    )
+                    String(ruler.id)
             )
             .sort(
                 (a, b) =>
@@ -827,30 +819,25 @@ function showRuler(
             );
 
 
+    /* ===================================
+       建立 Podcast HTML
+    =================================== */
+
     let podcastHTML = "";
 
 
-    if (
-        rulerPodcasts.length > 0
-    ) {
+    if (rulerPodcasts.length > 0) {
 
         podcastHTML =
             rulerPodcasts
                 .map(
                     podcast => `
 
-                    <div
-                        class="podcast-item">
+                    <div class="podcast-item">
 
-                        <div
-                            class="podcast-title">
+                        <div class="podcast-title">
 
-                            🎧
-                            ${
-                                podcast.title
-                                ||
-                                "Podcast 單集"
-                            }
+                            🎧 ${podcast.title}
 
                         </div>
 
@@ -883,16 +870,14 @@ function showRuler(
     }
 
 
-    /*
-        Wikipedia
-    */
+    /* ===================================
+       Wikipedia
+    =================================== */
 
     let wikipediaHTML = "";
 
 
-    if (
-        ruler.wikipedia
-    ) {
+    if (ruler.wikipedia) {
 
         wikipediaHTML = `
 
@@ -921,9 +906,9 @@ function showRuler(
     }
 
 
-    /*
-        顯示面板
-    */
+    /* ===================================
+       顯示資訊面板
+    =================================== */
 
     panel.innerHTML = `
 
@@ -983,11 +968,13 @@ function showRuler(
             </div>
 
             <div class="info-value">
+
                 ${
                     ruler.description
                     ||
                     "目前沒有介紹資料。"
                 }
+
             </div>
 
         </div>
