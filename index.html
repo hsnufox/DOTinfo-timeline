@@ -483,8 +483,7 @@ const RULERS_SHEET_URL =
 */
 
 const PODCAST_SHEET_URL =
-    "請先不要填這裡";
-
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRVkmsLln3MzZ7wG4hR7d-XsSZ6YPGARzDmrzMk61yO_qNdMjW4JA9lvUD1V7F6T1ArXQ4RJSk3W0TW/pub?gid=1372564525&single=true&output=csv";
 
 /* ===================================
    全域資料
@@ -1313,7 +1312,113 @@ async function loadRulersSheet() {
     }
 
 }
+/* ===================================
+   讀取 Podcast Google Sheet
+=================================== */
 
+async function loadPodcastsSheet() {
+
+    try {
+
+        const response =
+            await fetch(
+                PODCAST_SHEET_URL
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Podcast Google Sheet 無法讀取"
+            );
+
+        }
+
+
+        const csv =
+            await response.text();
+
+
+        console.log(
+            "Podcast Google Sheet 原始資料：",
+            csv
+        );
+
+
+        const rows =
+            parseCSV(csv);
+
+
+        console.log(
+            "Podcast Google Sheet 資料：",
+            rows
+        );
+
+
+        podcastsData =
+            rows
+                .slice(1)
+                .map(
+                    values => {
+
+                    return {
+
+                        ruler_id:
+                            values[0]
+                            ?
+                            values[0].trim()
+                            :
+                            "",
+
+                        url:
+                            values[1]
+                            ?
+                            values[1].trim()
+                            :
+                            "",
+
+                        order:
+                            Number(
+                                values[2]
+                            )
+                            || 0,
+
+                        title:
+                            values[3]
+                            ?
+                            values[3].trim()
+                            :
+                            ""
+
+                    };
+
+                })
+                .filter(
+                    podcast =>
+                        podcast.ruler_id
+                        &&
+                        podcast.url
+                );
+
+
+        console.log(
+            "整理後 Podcast 資料：",
+            podcastsData
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "讀取 Podcast Google Sheet 失敗：",
+            error
+        );
+
+    }
+
+}
 
 /* ===================================
    啟動
