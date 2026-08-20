@@ -686,8 +686,11 @@ async function loadGoogleSheet() {
             .slice(1)
             .map(row => {
 
-                const values =
-                    row.split(",");
+               const values =
+    row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+        ?.map(value =>
+            value.replace(/^"|"$/g, "").trim()
+        ) || [];
 
 
 const item = {};
