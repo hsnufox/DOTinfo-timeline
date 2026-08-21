@@ -1216,9 +1216,7 @@ async function loadRulersSheet() {
             );
 
 
-        if (
-            !response.ok
-        ) {
+        if (!response.ok) {
 
             throw new Error(
                 "Google Sheet 無法讀取"
@@ -1241,100 +1239,88 @@ async function loadRulersSheet() {
             parseCSV(csv);
 
 
-const headers =
-    rows[0].map(
-        header =>
-            header.trim()
-    );
+        const headers =
+            rows[0].map(
+                header =>
+                    header.trim()
+            );
 
 
-console.log(
-    "Google Sheet 欄位：",
-    headers
-);
+        console.log(
+            "Google Sheet 欄位：",
+            headers
+        );
 
 
-rulersData =
-    rows
-        .slice(1)
-        .map(
-            values => {
+        rulersData =
+            rows
+                .slice(1)
+                .map(
+                    values => {
 
-                const item = {};
+                        const item = {};
 
 
-                const get =
-                    columnName => {
+                        const get =
+                            columnName => {
 
-                        const index =
-                            headers.indexOf(
-                                columnName
+                                const index =
+                                    headers.indexOf(
+                                        columnName
+                                    );
+
+
+                                return (
+                                    index !== -1
+                                    &&
+                                    values[index] !== undefined
+                                )
+                                    ? values[index].trim()
+                                    : "";
+
+                            };
+
+
+                        item.id =
+                            get("id");
+
+
+                        item.country =
+                            get("country");
+
+
+                        item.ruler =
+                            get("ruler");
+
+
+                        item.dynasty =
+                            get("dynasty");
+
+
+                        item.start =
+                            Number(
+                                get("start")
                             );
 
 
-                        return index !== -1
-                            && values[index] !== undefined
-                            ? values[index].trim()
-                            : "";
-
-                    };
+                        item.end =
+                            Number(
+                                get("end")
+                            );
 
 
-                item.id =
-                    get("id");
+                        item.description =
+                            get("description");
 
 
-                item.country =
-                    get("country");
+                        item.wikipedia =
+                            get("wikipedia");
 
 
-                item.ruler =
-                    get("ruler");
+                        return item;
 
-
-                item.dynasty =
-                    get("dynasty");
-
-
-                item.start =
-                    Number(
-                        get("start")
-                    );
-
-
-                item.end =
-                    Number(
-                        get("end")
-                    );
-
-
-                item.description =
-                    get("description");
-
-
-                item.wikipedia =
-                    get("wikipedia");
-
-
-                return item;
-
-            }
-        )
-        .filter(
-            ruler =>
-                ruler.country
-                &&
-                ruler.ruler
-                &&
-                Number.isFinite(
-                    ruler.start
+                    }
                 )
-                &&
-                Number.isFinite(
-                    ruler.end
-                )
-        );
-                })
                 .filter(
                     ruler =>
                         ruler.country
@@ -1417,69 +1403,66 @@ async function loadPodcastsSheet() {
         );
 
 
-const headers =
-    rows[0].map(
-        header =>
-            header.trim()
-    );
+        const headers =
+            rows[0].map(
+                header =>
+                    header.trim()
+            );
 
 
-console.log(
-    "Podcast Google Sheet 欄位：",
-    headers
-);
-
-
-podcastsData =
-    rows
-        .slice(1)
-        .map(
-            values => {
-
-                const get =
-                    columnName => {
-
-                        const index =
-                            headers.indexOf(
-                                columnName
-                            );
-
-
-                        return index !== -1
-                            && values[index] !== undefined
-                            ? values[index].trim()
-                            : "";
-
-                    };
-
-
-                return {
-
-                    ruler_id:
-                        get("ruler_id"),
-
-                    url:
-                        get("url"),
-
-                    order:
-                        Number(
-                            get("order")
-                        )
-                        || 0,
-
-                    title:
-                        get("Title")
-
-                };
-
-            }
-        )
-        .filter(
-            podcast =>
-                podcast.ruler_id
-                &&
-                podcast.url
+        console.log(
+            "Podcast Google Sheet 欄位：",
+            headers
         );
+
+
+        podcastsData =
+            rows
+                .slice(1)
+                .map(
+                    values => {
+
+                        const get =
+                            columnName => {
+
+                                const index =
+                                    headers.indexOf(
+                                        columnName
+                                    );
+
+
+                                return (
+                                    index !== -1
+                                    &&
+                                    values[index] !== undefined
+                                )
+                                    ? values[index].trim()
+                                    : "";
+
+                            };
+
+
+                        return {
+
+                            ruler_id:
+                                get("ruler_id"),
+
+                            url:
+                                get("url"),
+
+                            order:
+                                Number(
+                                    get("order")
+                                )
+                                || 0,
+
+                            title:
+                                get("Title")
+
+                        };
+
+                    }
+                )
                 .filter(
                     podcast =>
                         podcast.ruler_id
@@ -1506,7 +1489,6 @@ podcastsData =
     }
 
 }
-
 /* ===================================
    測試 Apple Podcast
 =================================== */
