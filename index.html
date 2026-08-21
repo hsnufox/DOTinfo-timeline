@@ -1583,6 +1583,102 @@ loadPodcastsSheet();
 
 testApplePodcast();
 
+/* ===================================
+   時間軸縮放
+=================================== */
+
+let timelineZoom = 1;
+
+
+const zoomInButton =
+    document.getElementById(
+        "zoomIn"
+    );
+
+
+const zoomOutButton =
+    document.getElementById(
+        "zoomOut"
+    );
+
+
+const zoomLevel =
+    document.getElementById(
+        "zoomLevel"
+    );
+
+
+function updateTimelineZoom() {
+
+    const timeline =
+        document.getElementById(
+            "timeline"
+        );
+
+
+    const years =
+        document.getElementById(
+            "years"
+        );
+
+
+    timeline.style.width =
+        (timelineZoom * 100)
+        + "%";
+
+
+    years.style.width =
+        (timelineZoom * 100)
+        + "%";
+
+
+    zoomLevel.innerText =
+        Math.round(
+            100 / timelineZoom
+        )
+        + " 年";
+
+
+    console.log(
+        "時間軸 Zoom：",
+        timelineZoom
+    );
+
+}
+
+
+zoomInButton.onclick =
+    function() {
+
+        timelineZoom *= 1.5;
+
+        updateTimelineZoom();
+
+    };
+
+
+zoomOutButton.onclick =
+    function() {
+
+        timelineZoom /= 1.5;
+
+
+        if (
+            timelineZoom < 1
+        ) {
+
+            timelineZoom = 1;
+
+        }
+
+
+        updateTimelineZoom();
+
+    };
+
+
+updateTimelineZoom();
+      
 </script>
 
 
